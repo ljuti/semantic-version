@@ -1,0 +1,13 @@
+name: semantic-version
+version: 0.1.0
+
+authors:
+  - Lauri Jutila <ruby@laurijutila.com>
+
+crystal: 0.26.1
+
+license: MIT
+
+dependencies:
+  spec2:
+    github: waterlink/spec2.cr
