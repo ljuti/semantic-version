@@ -28,6 +28,41 @@ with_hash   = Semantic::Version.new({ "major" => 2, "minor" => 3, "patch" => 0 }
 with_ntuple = Semantic::Version.new({ major: 2, minor: 5, patch: 0, pre: nil, build: "build.1123" })
 ```
 
+You can also compare versions.
+
+```crystal
+v_new = Semantic::Version.new("4.2.0")
+v_old = Semantic::Version.new("2.4.0")
+
+v_new > v_old       # => true
+v_old < v_new       # => true
+v_new.gt?(v_old)    # => true
+v_old.lt?(v_new)    # => true
+```
+
+Convenience methods include:
+
+* `gt?` - greater than
+* `gte?` - greater than or equal to
+* `lt?` - less than
+* `lte?` - less than or equal to
+* `eql?`- equal to
+
+These work with SemVer version strings, too.
+
+Some version constraints are supported. Wildcard (*) and tilde (~) version range operators are currently supported.
+
+```crystal
+version = Version.new("4.2.0")
+
+version.satisfies?("4.*")         # => true   (>= 4.0.0 && < 5.0.0)
+version.satisfies?("4.1.*")       # => false  !(>= 4.1.0 && < 4.2.0)
+version.satisfies?("4.2.*")       # => true   (>= 4.2.0 && < 4.3.0)
+
+version.satisfies?("~ 4.1")       # => true   (>= 4.1.0 && < 5.0.0)
+version.satisfies?("~ 4.1.5")     # => false  !(>= 4.1.5 && < 4.2.0)
+```
+
 ## Installation
 
 Add this to your application's `shard.yml`:

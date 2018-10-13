@@ -272,6 +272,49 @@ Spec2.describe Semantic::Version do
         expect(subject < nil).to be_false
       end
     end
+
+    context "Satisfying specifications" do
+      subject { described_class.new("2.4.8") }
+
+      context "with wildcard operator" do
+        it "matches all versions" { expect(subject.satisfies?("*")).to be_true }
+        it "matches with matching major version" { expect(subject.satisfies?("2.*")).to be_true }
+        it "matches with matching minor version" { expect(subject.satisfies?("2.4.*")).to be_true }
+        it "doesn't match with matching major but greater minor" { expect(subject.satisfies?("2.5.*")).to be_false }
+        it "doesn't match with greater major" { expect(subject.satisfies?("3.*")).to be_false }
+        it "fails with non-conforming input" do
+          expect do
+            subject.satisfies?("2*")
+          end.to raise_error(ArgumentError, "Your version string isn't SemVer compatible.")
+        end
+      end
+
+      context "with tilde operator" do
+        it "matches with expected major and minor versions" do
+          expect(subject.satisfies?("~ 2.4")).to be_true
+        end
+
+        it "matches with expected major, minor, and patch version" do
+          expect(subject.satisfies?("~ 2.4.8")).to be_true
+        end
+
+        it "doesn't match with expected major but greater minor version" do
+          expect(subject.satisfies?("~ 2.5")).to be_false
+        end
+
+        it "doesn't match with expected major and minor, but greater patch version" do
+          expect(subject.satisfies?("~ 2.4.9")).to be_false
+        end
+
+        it "doesn't match when its major version is too great" do
+          expect(subject.satisfies?("~ 1.0")).to be_false
+        end
+
+        it "doesn't match when its minor version is too great" do
+          expect(subject.satisfies?("~ 2.1.0")).to be_false
+        end
+      end
+    end
   end
 
   describe "Type coercions" do

@@ -206,6 +206,69 @@ module Semantic
       eql?(Version.new(other))
     end
 
+    # Queries whether a version string with a constraint operator is satisfied with the instance.
+    #
+    # Supported constraints are wildcard (*) and tilde (~) version ranges. Examples:
+    #
+    # ```
+    # version = Semantic::Version.new("2.4.8")
+    # version.satisfies?("2.*")       # => true, >= 2.0.0 and < 3.0.0
+    # version.satisfies?("2.4.*")     # => true, >= 2.4.0 and < 2.5.0
+    # version.satisfies?("~2.3")      # => true, >= 2.3.0 and < 3.0.0
+    # version.satisfies?("~2.3.6")    # => false, >= 2.3.6 and < 2.4.0
+    # ```
+    def satisfies?(version : String)
+      return true if version.strip == "*"
+      elems = version.split(/(\d(.+)?)/, 2).map &.strip
+      comparator, str = elems[0], elems[1]
+
+      begin
+        comparator = comparator.empty? ? "*" : comparator
+        satisfies_comparator?(comparator, str)
+      rescue exception : ArgumentError
+        raise exception        
+      end
+    end
+
+    # Bumps up major version number and returns a new `Semantic::Version` instance.
+    #
+    # Note: this will clear pre and build version information for the new instance.
+    def major! : Version
+      new_version = dup
+      new_version.increment_major
+      new_version
+    end
+
+    # Bumps up minor version number and returns a new `Semantic::Version` instance.
+    #
+    # Note: this will clear pre and build version information for the new instance.
+    def minor! : Version
+      new_version = dup
+      new_version.increment_minor
+      new_version
+    end
+
+    # :nodoc:
+    def increment_major
+      @major += 1
+      @minor = 0
+      @patch = 0
+      reset_pre_build
+    end
+
+    # :nodoc:
+    def increment_minor
+      @minor += 1
+      @patch = 0
+      reset_pre_build
+    end
+
+    # :nodoc:
+    def increment_patch
+      @patch += 1
+      reset_pre_build
+    end
+    
     # :nodoc:
     def <=>(other : Version)
       result = compare_version(other)
@@ -250,6 +313,55 @@ module Semantic
     # :nodoc:
     def >=(other : Version)
       [0, 1].includes?(self <=> other)
+    end
+
+    private def satisfies_comparator?(comparator, str)
+      case comparator
+      when "~"
+        tilde_matches?(str)
+      when "~>"
+        pessimistic_matches?(str)
+      else
+        wildcard_matches?(str)
+      end
+    end
+
+    private def tilde_matches?(str)
+      elems = str.split(".").map &.to_i
+      scope = elems.size
+      elems << 0 if scope == 2
+      version = Version.new(elems.join("."))
+      self >= version && self < ceiling_version(version, scope)
+    end
+
+    private def pessimistic_matches?(str)
+      tilde_matches?(str)
+    end
+
+    private def wildcard_matches?(str)
+      begin
+        elems = str.split(".").reject{|e| e == "*"}.map &.to_i
+        scope = elems.size + 1
+        (3 - elems.size).times do
+          elems << 0
+        end
+        floor = Version.new(elems.join("."))
+        ceiling = ceiling_version(floor, scope)
+        self >= floor && self < ceiling
+      rescue exception : ArgumentError
+        raise ArgumentError.new("Your version string isn't SemVer compatible.")
+      end
+    end
+
+    private def ceiling_version(version : Version, scope : Int32) : Version
+      return version.major! if scope == 2
+      return version.minor! if scope == 3
+      return version
+    end
+
+    private def reset_pre_build
+      @pre = nil
+      @build = nil
     end
 
     private def has_required_keys?(version)
