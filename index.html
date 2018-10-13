@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.26.1">
+
+
+<link href="css/style.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="js/doc.js"></script>
+<script type="text/javascript">
+  CrystalDoc.base_path = "";
+</script>
+
+  <meta id="repository-name" content="github.com/ljuti/semantic-version">
+  <title>README - github.com/ljuti/semantic-version</title>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false">
+    </div>
+
+    <div class="repository-links">
+      <a href="index.html">README</a>
+    </div>
+  </div>
+
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent " data-id="github.com/ljuti/semantic-version/Semantic" data-name="semantic">
+      <a href="Semantic.html">Semantic</a>
+      
+        <ul>
+  
+  <li class=" " data-id="github.com/ljuti/semantic-version/Semantic/Version" data-name="semantic::version">
+      <a href="Semantic/Version.html">Version</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1>semantic-version</h1>
+
+<p><a href="https://crystal-lang.org/" target="_blank"><img src="https://img.shields.io/badge/built%20with-crystal-000000.svg?style=flat-square" alt="Built with Crystal"/></a>
+<a href="https://travis-ci.org/ljuti/semantic-version" target="_blank"><img src="https://img.shields.io/travis/ljuti/semantic-version/master.svg?style=flat-square" alt="Build status"/></a></p>
+
+<p>A small Crystal utility class for storing, parsing, and comparing SemVer-style version strings.</p>
+
+<p>This class is a port of <a href="https://github.com/jlindsey/semantic" target="_blank">semantic</a> Ruby gem over to Crystal.</p>
+
+<h2>Usage</h2>
+
+<p>This library exposes a single class - <code><a href="Semantic/Version.html">Semantic::Version</a></code>. Instantiate it a SemVer version as a string, hash, tuple or named tuple, and you've got a version object with a few methods.</p>
+
+<pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;semantic-version&quot;</span>
+
+version <span class="o">=</span> <span class="t">Semantic</span><span class="t">::</span><span class="t">Version</span>.<span class="k">new</span>(<span class="s">&quot;4.2.0&quot;</span>)
+version.major             <span class="c"># =&gt; 4</span>
+version.minor             <span class="c"># =&gt; 2</span>
+version.patch             <span class="c"># =&gt; 0</span>
+
+release <span class="o">=</span> <span class="t">Semantic</span><span class="t">::</span><span class="t">Version</span>.<span class="k">new</span>(<span class="s">&quot;5.2.0&quot;</span>)
+release <span class="o">&gt;</span> version         <span class="c"># =&gt; true</span>
+version <span class="o">&lt;=&gt;</span> release       <span class="c"># =&gt; -1</span>
+
+with_tuple  <span class="o">=</span> <span class="t">Semantic</span><span class="t">::</span><span class="t">Version</span>.<span class="k">new</span>({<span class="n">4</span>, <span class="n">2</span>, <span class="n">0</span>})
+with_hash   <span class="o">=</span> <span class="t">Semantic</span><span class="t">::</span><span class="t">Version</span>.<span class="k">new</span>({ <span class="s">&quot;major&quot;</span> => <span class="n">2</span>, <span class="s">&quot;minor&quot;</span> => <span class="n">3</span>, <span class="s">&quot;patch&quot;</span> => <span class="n">0</span> })
+with_ntuple <span class="o">=</span> <span class="t">Semantic</span><span class="t">::</span><span class="t">Version</span>.<span class="k">new</span>({ major: <span class="n">2</span>, minor: <span class="n">5</span>, patch: <span class="n">0</span>, pre: <span class="n">nil</span>, build: <span class="s">&quot;build.1123&quot;</span> })</code></pre>
+
+<p>You can also compare versions.</p>
+
+<pre><code class="language-crystal">v_new <span class="o">=</span> <span class="t">Semantic</span><span class="t">::</span><span class="t">Version</span>.<span class="k">new</span>(<span class="s">&quot;4.2.0&quot;</span>)
+v_old <span class="o">=</span> <span class="t">Semantic</span><span class="t">::</span><span class="t">Version</span>.<span class="k">new</span>(<span class="s">&quot;2.4.0&quot;</span>)
+
+v_new <span class="o">&gt;</span> v_old       <span class="c"># =&gt; true</span>
+v_old <span class="o">&lt;</span> v_new       <span class="c"># =&gt; true</span>
+v_new.gt?(v_old)    <span class="c"># =&gt; true</span>
+v_old.lt?(v_new)    <span class="c"># =&gt; true</span></code></pre>
+
+<p>Convenience methods include:</p>
+
+<ul><li><code>gt?</code> - greater than</li><li><code>gte?</code> - greater than or equal to</li><li><code>lt?</code> - less than</li><li><code>lte?</code> - less than or equal to</li><li><code>eql?</code>- equal to</li></ul>
+
+<p>These work with SemVer version strings, too.</p>
+
+<p>Some version constraints are supported. Wildcard (*) and tilde (~) version range operators are currently supported.</p>
+
+<pre><code class="language-crystal">version <span class="o">=</span> <span class="t">Version</span>.<span class="k">new</span>(<span class="s">&quot;4.2.0&quot;</span>)
+
+version.satisfies?(<span class="s">&quot;4.*&quot;</span>)         <span class="c"># =&gt; true   (&gt;= 4.0.0 &amp;&amp; &lt; 5.0.0)</span>
+version.satisfies?(<span class="s">&quot;4.1.*&quot;</span>)       <span class="c"># =&gt; false  !(&gt;= 4.1.0 &amp;&amp; &lt; 4.2.0)</span>
+version.satisfies?(<span class="s">&quot;4.2.*&quot;</span>)       <span class="c"># =&gt; true   (&gt;= 4.2.0 &amp;&amp; &lt; 4.3.0)</span>
+
+version.satisfies?(<span class="s">&quot;~ 4.1&quot;</span>)       <span class="c"># =&gt; true   (&gt;= 4.1.0 &amp;&amp; &lt; 5.0.0)</span>
+version.satisfies?(<span class="s">&quot;~ 4.1.5&quot;</span>)     <span class="c"># =&gt; false  !(&gt;= 4.1.5 &amp;&amp; &lt; 4.2.0)</span></code></pre>
+
+<h2>Installation</h2>
+
+<p>Add this to your application's <code>shard.yml</code>:</p>
+
+<pre><code class="language-yaml">dependencies:
+  semantic-version:
+    github: ljuti/semantic-version</code></pre>
+
+<h2>Contributing</h2>
+
+<ol><li>Fork it (&lt;https://github.com/ljuti/semantic-version/fork>)</li><li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li><li>Commit your changes (<code>git commit -am 'Add some feature'</code>)</li><li>Push to the branch (<code>git push origin my-new-feature</code>)</li><li>Create a new Pull Request</li></ol>
+
+<h2>Contributors</h2>
+
+<ul><li><a href="https://github.com/ljuti" target="_blank">ljuti</a> Lauri Jutila - creator, maintainer</li></ul>
+</div>
+</body>
+</html>

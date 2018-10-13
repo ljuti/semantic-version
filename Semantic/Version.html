@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.26.1">
+
+
+<link href="../css/style.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="../js/doc.js"></script>
+<script type="text/javascript">
+  CrystalDoc.base_path = "../";
+</script>
+
+  <meta id="repository-name" content="github.com/ljuti/semantic-version">
+  <title>Semantic::Version - github.com/ljuti/semantic-version</title>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false">
+    </div>
+
+    <div class="repository-links">
+      <a href="../index.html">README</a>
+    </div>
+  </div>
+
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
+
+  <div class="types-list">
+    <ul>
+  
+  <li class="parent open current" data-id="github.com/ljuti/semantic-version/Semantic" data-name="semantic">
+      <a href="../Semantic.html">Semantic</a>
+      
+        <ul>
+  
+  <li class=" current" data-id="github.com/ljuti/semantic-version/Semantic/Version" data-name="semantic::version">
+      <a href="../Semantic/Version.html">Version</a>
+      
+    </li>
+  
+</ul>
+
+      
+    </li>
+  
+</ul>
+
+  </div>
+</div>
+
+
+<div class="main-content">
+<h1 class="type-name">
+
+  <span class="kind">class</span> Semantic::Version
+
+</h1>
+
+
+  <ul class="superclass-hierarchy"><li class="superclass"><a href="../Semantic/Version.html">Semantic::Version</a></li><li class="superclass">Reference</li><li class="superclass">Object</li></ul>
+
+
+
+
+  <h2>Overview</h2>
+
+  <p>A small Crystal utility class for storing, parsing, and comparing SemVer-style version strings.</p>
+
+
+
+
+
+  <h2>Included Modules</h2>
+  <ul class="other-types-list">
+  
+    <li class="other-type">Comparable(<a href="../Semantic/Version.html">Semantic::Version</a>)</li>
+  
+  </ul>
+
+
+
+
+
+
+
+
+
+
+  <h2>Defined in:</h2>
+  
+    
+      <a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L3" target="_blank">
+        semantic/version.cr
+      </a>
+    
+    <br/>
+  
+
+
+
+  
+    <h2>Constant Summary</h2>
+  
+  <dl>
+    
+      <dt class="entry-const" id="SEMVER_REGEXP">
+        <strong>SEMVER_REGEXP</strong> = <code><span class="s">/\A(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][a-zA-Z0-9-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][a-zA-Z0-9-]*))*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?\Z/</span></code>
+      </dt>
+      
+    
+  </dl>
+
+
+
+  <h2>Constructors</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#new%28version_string%3AString%29-class-method" class="signature"><strong>.new</strong>(version_string : String)</a>
+        
+          <div class="summary"><p>Initialize a new <code><a href="../Semantic/Version.html">Semantic::Version</a></code> from a version string.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#new%28version%3AHash%28String%2CInt32%7CString%7CNil%29%29-class-method" class="signature"><strong>.new</strong>(version : Hash(String, Int32 | String | Nil))</a>
+        
+          <div class="summary"><p>Initialize a new <code><a href="../Semantic/Version.html">Semantic::Version</a></code> from a hash.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#new%28version%3A%3A%3ATuple%28Int32%2CInt32%2CInt32%29%29-class-method" class="signature"><strong>.new</strong>(version : ::Tuple(Int32, Int32, Int32))</a>
+        
+          <div class="summary"><p>Initialize a new <code><a href="../Semantic/Version.html">Semantic::Version</a></code> from a tuple <code>T(Int32, Int32, Int32)</code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#new%28version%3A%3A%3ATuple%28Int32%2CInt32%2CInt32%2CString%3F%2CString%3F%29%29-class-method" class="signature"><strong>.new</strong>(version : ::Tuple(Int32, Int32, Int32, String?, String?))</a>
+        
+          <div class="summary"><p>Initialize a new <code><a href="../Semantic/Version.html">Semantic::Version</a></code> from a tuple <code>T(Int32, Int32, Int32, String?, String?)</code>.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#new%28version%3ANamedTuple%28%29%29-class-method" class="signature"><strong>.new</strong>(version : NamedTuple())</a>
+        
+          <div class="summary"><p>Initialize a new <code><a href="../Semantic/Version.html">Semantic::Version</a></code> from a named tuple.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+  <h2>Instance Method Summary</h2>
+  <ul class="list-summary">
+    
+      <li class="entry-summary">
+        <a href="#build%3AString%3F-instance-method" class="signature"><strong>#build</strong> : String?</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#compare_elem%28one%3AInt32%2Cother%3AInt32%29-instance-method" class="signature"><strong>#compare_elem</strong>(one : Int32, other : Int32)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#eql%3F%28other%3AString%29-instance-method" class="signature"><strong>#eql?</strong>(other : String)</a>
+        
+          <div class="summary"><p>Convenience method for testing whether a version is equal to supplied version string.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#eql%3F%28other%3AVersion%29-instance-method" class="signature"><strong>#eql?</strong>(other : Version)</a>
+        
+          <div class="summary"><p>Convenience method for testing whether a version is equal to supplied version.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#gt%3F%28other%3AString%29-instance-method" class="signature"><strong>#gt?</strong>(other : String)</a>
+        
+          <div class="summary"><p>Convenience method for testing whether a version is greater than supplied version string.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#gt%3F%28other%3AVersion%29-instance-method" class="signature"><strong>#gt?</strong>(other : Version)</a>
+        
+          <div class="summary"><p>Convenience method for testing whether a version is greater than supplied version.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#gte%3F%28other%3AString%29-instance-method" class="signature"><strong>#gte?</strong>(other : String)</a>
+        
+          <div class="summary"><p>Convenience method for testing whether a version is greater or equal than supplied version string.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#gte%3F%28other%3AVersion%29-instance-method" class="signature"><strong>#gte?</strong>(other : Version)</a>
+        
+          <div class="summary"><p>Convenience method for testing whether a version is greater or equal than supplied version.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#lt%3F%28other%3AString%29-instance-method" class="signature"><strong>#lt?</strong>(other : String)</a>
+        
+          <div class="summary"><p>Convenience method for testing whether a version is less than supplied version string.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#lt%3F%28other%3AVersion%29-instance-method" class="signature"><strong>#lt?</strong>(other : Version)</a>
+        
+          <div class="summary"><p>Convenience method for testing whether a version is less than supplied version.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#lte%3F%28other%3AString%29-instance-method" class="signature"><strong>#lte?</strong>(other : String)</a>
+        
+          <div class="summary"><p>Convenience method for testing whether a version is less or equal than supplied version string.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#lte%3F%28other%3AVersion%29-instance-method" class="signature"><strong>#lte?</strong>(other : Version)</a>
+        
+          <div class="summary"><p>Convenience method for testing whether a version is less or equal than supplied version.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#major%3AInt32-instance-method" class="signature"><strong>#major</strong> : Int32</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#major%21%3AVersion-instance-method" class="signature"><strong>#major!</strong> : Version</a>
+        
+          <div class="summary"><p>Bumps up major version number and returns a new <code><a href="../Semantic/Version.html">Semantic::Version</a></code> instance.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#major%3D%28major%3AInt32%29-instance-method" class="signature"><strong>#major=</strong>(major : Int32)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#minor%3AInt32-instance-method" class="signature"><strong>#minor</strong> : Int32</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#minor%21%3AVersion-instance-method" class="signature"><strong>#minor!</strong> : Version</a>
+        
+          <div class="summary"><p>Bumps up minor version number and returns a new <code><a href="../Semantic/Version.html">Semantic::Version</a></code> instance.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#minor%3D%28minor%3AInt32%29-instance-method" class="signature"><strong>#minor=</strong>(minor : Int32)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#patch%3AInt32-instance-method" class="signature"><strong>#patch</strong> : Int32</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#patch%3D%28patch%3AInt32%29-instance-method" class="signature"><strong>#patch=</strong>(patch : Int32)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#pre%3AString%3F-instance-method" class="signature"><strong>#pre</strong> : String?</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#pre%3D%28pre%3AString%3F%29-instance-method" class="signature"><strong>#pre=</strong>(pre : String?)</a>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#satisfies%3F%28version%3AString%29-instance-method" class="signature"><strong>#satisfies?</strong>(version : String)</a>
+        
+          <div class="summary"><p>Queries whether a version string with a constraint operator is satisfied with the instance.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#to_a-instance-method" class="signature"><strong>#to_a</strong></a>
+        
+          <div class="summary"><p>Returns an array of the elements of the version.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#to_h-instance-method" class="signature"><strong>#to_h</strong></a>
+        
+          <div class="summary"><p>Returns version information as a hash.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#to_s-instance-method" class="signature"><strong>#to_s</strong></a>
+        
+          <div class="summary"><p>Returns a version string.</p></div>
+        
+      </li>
+    
+      <li class="entry-summary">
+        <a href="#to_t-instance-method" class="signature"><strong>#to_t</strong></a>
+        
+          <div class="summary"><p>Returns version information as a tuple.</p></div>
+        
+      </li>
+    
+  </ul>
+
+
+
+
+
+<div class="methods-inherited">
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+    
+
+
+    
+
+
+    
+
+
+  
+</div>
+
+
+  <h2>Constructor Detail</h2>
+  
+    <div class="entry-detail" id="new(version_string:String)-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(version_string : String)
+
+        <a class="method-permalink" href="#new%28version_string%3AString%29-class-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Initialize a new <code><a href="../Semantic/Version.html">Semantic::Version</a></code> from a version string.</p>
+
+<p>The string must be a valid SemVer string, containing at least major, minor, and patch elements.
+Pre and build elements are optional.</p>
+
+<p>Examples of valid strings:</p>
+
+<pre><code><span class="s">&quot;2.4.6&quot;</span>
+<span class="s">&quot;25.58.100&quot;</span>
+<span class="s">&quot;1.0.0-pre1&quot;</span>
+<span class="s">&quot;1.0.0+build.112358&quot;</span>
+<span class="s">&quot;2.0.5-alpha+prerelease&quot;</span></code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L30" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new(version:Hash(String,Int32|String|Nil))-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(version : Hash(String, Int32 | String | Nil))
+
+        <a class="method-permalink" href="#new%28version%3AHash%28String%2CInt32%7CString%7CNil%29%29-class-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Initialize a new <code><a href="../Semantic/Version.html">Semantic::Version</a></code> from a hash.</p>
+
+<p>The hash must contain "major", "minor", and "patch" keys with values. "Pre" and "build" elements are
+optional. The hash may contain other keys, too. Those are discarded on initialization.</p>
+
+<p>Example:</p>
+
+<pre><code>hash <span class="o">=</span> {
+  <span class="s">&quot;major&quot;</span> => <span class="n">2</span>,
+  <span class="s">&quot;minor&quot;</span> => <span class="n">4</span>,
+  <span class="s">&quot;patch&quot;</span> => <span class="n">0</span>, 
+}
+version <span class="o">=</span> <span class="t">Semantic</span><span class="t">::</span><span class="t">Version</span>.<span class="k">new</span>(hash)</code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L56" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new(version:::Tuple(Int32,Int32,Int32))-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(version : ::Tuple(Int32, Int32, Int32))
+
+        <a class="method-permalink" href="#new%28version%3A%3A%3ATuple%28Int32%2CInt32%2CInt32%29%29-class-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Initialize a new <code><a href="../Semantic/Version.html">Semantic::Version</a></code> from a tuple <code>T(Int32, Int32, Int32)</code>.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L67" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new(version:::Tuple(Int32,Int32,Int32,String?,String?))-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(version : ::Tuple(Int32, Int32, Int32, String?, String?))
+
+        <a class="method-permalink" href="#new%28version%3A%3A%3ATuple%28Int32%2CInt32%2CInt32%2CString%3F%2CString%3F%29%29-class-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Initialize a new <code><a href="../Semantic/Version.html">Semantic::Version</a></code> from a tuple <code>T(Int32, Int32, Int32, String?, String?)</code>.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L75" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="new(version:NamedTuple())-class-method">
+      <div class="signature">
+        
+        def self.<strong>new</strong>(version : NamedTuple())
+
+        <a class="method-permalink" href="#new%28version%3ANamedTuple%28%29%29-class-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Initialize a new <code><a href="../Semantic/Version.html">Semantic::Version</a></code> from a named tuple.</p>
+
+<p>Example:</p>
+
+<pre><code>tuple <span class="o">=</span> {
+  major: <span class="n">2</span>,
+  minor: <span class="n">4</span>,
+  patch: <span class="n">0</span>,
+  pre: <span class="n">nil</span>,
+  build: <span class="s">&quot;prerelease&quot;</span> 
+}
+<span class="t">Semantic</span><span class="t">::</span><span class="t">Version</span>.<span class="k">new</span>(tuple)</code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L97" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+
+  <h2>Instance Method Detail</h2>
+  
+    <div class="entry-detail" id="build:String?-instance-method">
+      <div class="signature">
+        
+        def <strong>build</strong> : String?
+
+        <a class="method-permalink" href="#build%3AString%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L14" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="compare_elem(one:Int32,other:Int32)-instance-method">
+      <div class="signature">
+        
+        def <strong>compare_elem</strong>(one : Int32, other : Int32)
+
+        <a class="method-permalink" href="#compare_elem%28one%3AInt32%2Cother%3AInt32%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L384" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="eql?(other:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>eql?</strong>(other : String)
+
+        <a class="method-permalink" href="#eql%3F%28other%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Convenience method for testing whether a version is equal to supplied version string.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L205" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="eql?(other:Version)-instance-method">
+      <div class="signature">
+        
+        def <strong>eql?</strong>(other : <a href="../Semantic/Version.html">Version</a>)
+
+        <a class="method-permalink" href="#eql%3F%28other%3AVersion%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Convenience method for testing whether a version is equal to supplied version.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L200" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="gt?(other:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>gt?</strong>(other : String)
+
+        <a class="method-permalink" href="#gt%3F%28other%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Convenience method for testing whether a version is greater than supplied version string.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L165" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="gt?(other:Version)-instance-method">
+      <div class="signature">
+        
+        def <strong>gt?</strong>(other : <a href="../Semantic/Version.html">Version</a>)
+
+        <a class="method-permalink" href="#gt%3F%28other%3AVersion%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Convenience method for testing whether a version is greater than supplied version.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L160" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="gte?(other:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>gte?</strong>(other : String)
+
+        <a class="method-permalink" href="#gte%3F%28other%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Convenience method for testing whether a version is greater or equal than supplied version string.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L175" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="gte?(other:Version)-instance-method">
+      <div class="signature">
+        
+        def <strong>gte?</strong>(other : <a href="../Semantic/Version.html">Version</a>)
+
+        <a class="method-permalink" href="#gte%3F%28other%3AVersion%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Convenience method for testing whether a version is greater or equal than supplied version.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L170" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="lt?(other:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>lt?</strong>(other : String)
+
+        <a class="method-permalink" href="#lt%3F%28other%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Convenience method for testing whether a version is less than supplied version string.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L185" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="lt?(other:Version)-instance-method">
+      <div class="signature">
+        
+        def <strong>lt?</strong>(other : <a href="../Semantic/Version.html">Version</a>)
+
+        <a class="method-permalink" href="#lt%3F%28other%3AVersion%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Convenience method for testing whether a version is less than supplied version.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L180" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="lte?(other:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>lte?</strong>(other : String)
+
+        <a class="method-permalink" href="#lte%3F%28other%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Convenience method for testing whether a version is less or equal than supplied version string.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L195" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="lte?(other:Version)-instance-method">
+      <div class="signature">
+        
+        def <strong>lte?</strong>(other : <a href="../Semantic/Version.html">Version</a>)
+
+        <a class="method-permalink" href="#lte%3F%28other%3AVersion%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Convenience method for testing whether a version is less or equal than supplied version.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L190" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="major:Int32-instance-method">
+      <div class="signature">
+        
+        def <strong>major</strong> : Int32
+
+        <a class="method-permalink" href="#major%3AInt32-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L9" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="major!:Version-instance-method">
+      <div class="signature">
+        
+        def <strong>major!</strong> : <a href="../Semantic/Version.html">Version</a>
+
+        <a class="method-permalink" href="#major%21%3AVersion-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Bumps up major version number and returns a new <code><a href="../Semantic/Version.html">Semantic::Version</a></code> instance.</p>
+
+<p>Note: this will clear pre and build version information for the new instance.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L236" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="major=(major:Int32)-instance-method">
+      <div class="signature">
+        
+        def <strong>major=</strong>(major : Int32)
+
+        <a class="method-permalink" href="#major%3D%28major%3AInt32%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L9" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="minor:Int32-instance-method">
+      <div class="signature">
+        
+        def <strong>minor</strong> : Int32
+
+        <a class="method-permalink" href="#minor%3AInt32-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L10" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="minor!:Version-instance-method">
+      <div class="signature">
+        
+        def <strong>minor!</strong> : <a href="../Semantic/Version.html">Version</a>
+
+        <a class="method-permalink" href="#minor%21%3AVersion-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Bumps up minor version number and returns a new <code><a href="../Semantic/Version.html">Semantic::Version</a></code> instance.</p>
+
+<p>Note: this will clear pre and build version information for the new instance.</p></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L245" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="minor=(minor:Int32)-instance-method">
+      <div class="signature">
+        
+        def <strong>minor=</strong>(minor : Int32)
+
+        <a class="method-permalink" href="#minor%3D%28minor%3AInt32%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L10" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="patch:Int32-instance-method">
+      <div class="signature">
+        
+        def <strong>patch</strong> : Int32
+
+        <a class="method-permalink" href="#patch%3AInt32-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L11" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="patch=(patch:Int32)-instance-method">
+      <div class="signature">
+        
+        def <strong>patch=</strong>(patch : Int32)
+
+        <a class="method-permalink" href="#patch%3D%28patch%3AInt32%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L11" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="pre:String?-instance-method">
+      <div class="signature">
+        
+        def <strong>pre</strong> : String?
+
+        <a class="method-permalink" href="#pre%3AString%3F-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L12" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="pre=(pre:String?)-instance-method">
+      <div class="signature">
+        
+        def <strong>pre=</strong>(pre : String?)
+
+        <a class="method-permalink" href="#pre%3D%28pre%3AString%3F%29-instance-method">#</a>
+      </div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L12" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="satisfies?(version:String)-instance-method">
+      <div class="signature">
+        
+        def <strong>satisfies?</strong>(version : String)
+
+        <a class="method-permalink" href="#satisfies%3F%28version%3AString%29-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Queries whether a version string with a constraint operator is satisfied with the instance.</p>
+
+<p>Supported constraints are wildcard (*) and tilde (~) version ranges. Examples:</p>
+
+<pre><code>version <span class="o">=</span> <span class="t">Semantic</span><span class="t">::</span><span class="t">Version</span>.<span class="k">new</span>(<span class="s">&quot;2.4.8&quot;</span>)
+version.satisfies?(<span class="s">&quot;2.*&quot;</span>)       <span class="c"># =&gt; true, &gt;= 2.0.0 and &lt; 3.0.0</span>
+version.satisfies?(<span class="s">&quot;2.4.*&quot;</span>)     <span class="c"># =&gt; true, &gt;= 2.4.0 and &lt; 2.5.0</span>
+version.satisfies?(<span class="s">&quot;~2.3&quot;</span>)      <span class="c"># =&gt; true, &gt;= 2.3.0 and &lt; 3.0.0</span>
+version.satisfies?(<span class="s">&quot;~2.3.6&quot;</span>)    <span class="c"># =&gt; false, &gt;= 2.3.6 and &lt; 2.4.0</span></code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L220" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="to_a-instance-method">
+      <div class="signature">
+        
+        def <strong>to_a</strong>
+
+        <a class="method-permalink" href="#to_a-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Returns an array of the elements of the version.</p>
+
+<pre><code><span class="t">Semantic</span><span class="t">::</span><span class="t">Version</span>.<span class="k">new</span>(<span class="s">&quot;2.4.0-pre1+build.1123&quot;</span>).to_a   <span class="c"># =&gt; [2, 4, 0, &quot;pre1&quot;, &quot;build.1123&quot;]</span></code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L123" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="to_h-instance-method">
+      <div class="signature">
+        
+        def <strong>to_h</strong>
+
+        <a class="method-permalink" href="#to_h-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Returns version information as a hash.</p>
+
+<pre><code><span class="t">Semantic</span><span class="t">::</span><span class="t">Version</span>.<span class="k">new</span>(<span class="s">&quot;2.4.0-pre1+build.1123&quot;</span>).to_h
+<span class="c"># =&gt; {&quot;major&quot; =&gt; 2, &quot;minor&quot; =&gt; 4, &quot;patch&quot; =&gt; 0, &quot;pre&quot; =&gt; &quot;pre1&quot;, &quot;build&quot; =&gt; &quot;build.1123&quot;}</span></code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L133" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="to_s-instance-method">
+      <div class="signature">
+        
+        def <strong>to_s</strong>
+
+        <a class="method-permalink" href="#to_s-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Returns a version string.</p>
+
+<pre><code><span class="t">Semantic</span><span class="t">::</span><span class="t">Version</span>.<span class="k">new</span>(<span class="s">&quot;2.4.0-pre1+build.1123&quot;</span>).to_s   <span class="c"># =&gt; &quot;2.4.0-pre1+build.1123&quot;</span></code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L110" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+    <div class="entry-detail" id="to_t-instance-method">
+      <div class="signature">
+        
+        def <strong>to_t</strong>
+
+        <a class="method-permalink" href="#to_t-instance-method">#</a>
+      </div>
+      
+        <div class="doc"><p>Returns version information as a tuple.</p>
+
+<pre><code><span class="t">Semantic</span><span class="t">::</span><span class="t">Version</span>.<span class="k">new</span>(<span class="s">&quot;2.4.0-pre1+build.1123&quot;</span>).to_t
+<span class="c"># =&gt; {major: 2, minor: 4, patch: 0, pre: &quot;pre1&quot;, build: &quot;build.1123&quot;}</span></code></pre></div>
+      
+      <br/>
+      <div>
+        
+          [<a href="https://github.com/ljuti/semantic-version/blob/136951478804f42b10137a1ad86bec299ba22fa7/src/semantic/version.cr#L149" target="_blank">View source</a>]
+        
+      </div>
+    </div>
+  
+
+
+
+
+</div>
+
+</body>
+</html>
