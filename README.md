@@ -1,5 +1,8 @@
 # semantic-version
 
+[![Built with Crystal](https://img.shields.io/badge/built%20with-crystal-000000.svg?style=flat-square)](https://crystal-lang.org/)
+[![Build status](https://img.shields.io/travis/ljuti/semantic-version/master.svg?style=flat-square)](https://travis-ci.org/ljuti/semantic-version)
+
 A small Crystal utility class for storing, parsing, and comparing SemVer-style version strings.
 
 This class is a port of [semantic](https://github.com/jlindsey/semantic) Ruby gem over to Crystal.

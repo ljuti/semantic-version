@@ -1,5 +1,7 @@
 module Semantic
+  # A small Crystal utility class for storing, parsing, and comparing SemVer-style version strings.
   class Version
+
     include Comparable(Version)
 
     SEMVER_REGEXP = /\A(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][a-zA-Z0-9-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][a-zA-Z0-9-]*))*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?\Z/
@@ -11,6 +13,20 @@ module Semantic
 
     getter build : String?
 
+    # Initialize a new `Semantic::Version` from a version string.
+    #
+    # The string must be a valid SemVer string, containing at least major, minor, and patch elements.
+    # Pre and build elements are optional.
+    #
+    # Examples of valid strings:
+    #
+    # ```
+    # "2.4.6"
+    # "25.58.100"
+    # "1.0.0-pre1"
+    # "1.0.0+build.112358"
+    # "2.0.5-alpha+prerelease"
+    # ```
     def initialize(version_string : String)
       match = version_string.match(SEMVER_REGEXP)
 
@@ -22,6 +38,21 @@ module Semantic
       @build = match[5]?
     end
 
+    # Initialize a new `Semantic::Version` from a hash.
+    #
+    # The hash must contain "major", "minor", and "patch" keys with values. "Pre" and "build" elements are
+    # optional. The hash may contain other keys, too. Those are discarded on initialization.
+    #
+    # Example:
+    #
+    # ```
+    # hash = {
+    #   "major" => 2,
+    #   "minor" => 4,
+    #   "patch" => 0, 
+    # }
+    # version = Semantic::Version.new(hash)
+    # ```
     def initialize(version : Hash(String, Int32 | String | Nil))
       raise ArgumentError.new("You didn't supply all necessary keys in your version hash") unless has_required_keys?(version)
       clean = version.select("major", "minor", "patch", "pre", "build")
@@ -32,6 +63,7 @@ module Semantic
       @build = clean.has_key?("build") ? clean["build"].to_s : nil
     end
 
+    # Initialize a new `Semantic::Version` from a tuple `T(Int32, Int32, Int32)`.
     def initialize(version : { Int32, Int32, Int32 })
       @major = version[0]
       @minor = version[1]
@@ -39,6 +71,7 @@ module Semantic
       @pre, @build = nil, nil
     end
 
+    # Initialize a new `Semantic::Version` from a tuple `T(Int32, Int32, Int32, String?, String?)`.
     def initialize(version : {Int32, Int32, Int32, String?, String?})
       @major = version[0]
       @minor = version[1]
@@ -47,6 +80,20 @@ module Semantic
       @build = version[4]?
     end
 
+    # Initialize a new `Semantic::Version` from a named tuple.
+    #
+    # Example:
+    #
+    # ```
+    # tuple = {
+    #   major: 2,
+    #   minor: 4,
+    #   patch: 0,
+    #   pre: nil,
+    #   build: "prerelease" 
+    # }
+    # Semantic::Version.new(tuple)
+    # ```
     def initialize(version : NamedTuple(major: Int32, minor: Int32, patch: Int32, pre: String?, build: String?))
       @major = version[:major]
       @minor = version[:minor]
@@ -55,19 +102,175 @@ module Semantic
       @build = version[:build]
     end
 
+    # Returns a version string.
+    #
+    # ```
+    # Semantic::Version.new("2.4.0-pre1+build.1123").to_s   # => "2.4.0-pre1+build.1123"
+    # ```
+    def to_s
+      String.build do |io|
+        io << [@major, @minor, @patch].join(".")
+        io << "-" << @pre unless @pre.nil?
+        io << "+" << @build unless @build.nil?
+      end
+    end
+
+    # Returns an array of the elements of the version.
+    #
+    # ```
+    # Semantic::Version.new("2.4.0-pre1+build.1123").to_a   # => [2, 4, 0, "pre1", "build.1123"]
+    # ```
+    def to_a
+      [@major, @minor, @patch, @pre, @build]
+    end
+
+    # Returns version information as a hash.
+    #
+    # ```
+    # Semantic::Version.new("2.4.0-pre1+build.1123").to_h
+    # # => {"major" => 2, "minor" => 4, "patch" => 0, "pre" => "pre1", "build" => "build.1123"}
+    # ```
+    def to_h
+      {
+        "major" => @major,
+        "minor" => @minor,
+        "patch" => @patch,
+        "pre" => @pre,
+        "build" => @build
+      }
+    end
+
+    # Returns version information as a tuple.
+    #
+    # ```
+    # Semantic::Version.new("2.4.0-pre1+build.1123").to_t
+    # # => {major: 2, minor: 4, patch: 0, pre: "pre1", build: "build.1123"}
+    # ```
+    def to_t
+      {
+        major: @major,
+        minor: @minor,
+        patch: @patch,
+        pre: @pre,
+        build: @build
+      }
+    end
+
+    # Convenience method for testing whether a version is greater than supplied version.
+    def gt?(other : Version)
+      self > other
+    end
+
+    # Convenience method for testing whether a version is greater than supplied version string.
+    def gt?(other : String)
+      gt?(Version.new(other))
+    end
+
+    # Convenience method for testing whether a version is greater or equal than supplied version.
+    def gte?(other : Version)
+      self >= other
+    end
+
+    # Convenience method for testing whether a version is greater or equal than supplied version string.
+    def gte?(other : String)
+      gte?(Version.new(other))
+    end
+
+    # Convenience method for testing whether a version is less than supplied version.
+    def lt?(other : Version)
+      self < other
+    end
+
+    # Convenience method for testing whether a version is less than supplied version string.
+    def lt?(other : String)
+      lt?(Version.new(other))
+    end
+
+    # Convenience method for testing whether a version is less or equal than supplied version.
+    def lte?(other : Version)
+      self <= other
+    end
+
+    # Convenience method for testing whether a version is less or equal than supplied version string.
+    def lte?(other : String)
+      lte?(Version.new(other))
+    end
+
+    # Convenience method for testing whether a version is equal to supplied version.
+    def eql?(other : Version)
+      self == other
+    end
+
+    # Convenience method for testing whether a version is equal to supplied version string.
+    def eql?(other : String)
+      eql?(Version.new(other))
+    end
+
+    # :nodoc:
     def <=>(other : Version)
       result = compare_version(other)
       result == 0 ? compare_pre(other) : result
     end
 
+    # :nodoc:
     def <=>(other : Nil)
       1
     end
 
+    # :nodoc:
+    def <=>(version : String)
+      self <=> Version.new(version)
+    end
+
+    # :nodoc:
+    def >(other : Version)
+      (self <=> other) == 1
+    end
+
+    # :nodoc:
+    def >(other : Nil)
+      !!(self <=> other)
+    end
+
+    # :nodoc:
+    def <(other : Version)
+      (self <=> other) == -1
+    end
+
+    # :nodoc:
+    def <(other : Nil)
+      !(self <=> nil)
+    end
+
+    # :nodoc:
+    def <=(other : Version)
+      [0, -1].includes?(self <=> other)
+    end
+
+    # :nodoc:
+    def >=(other : Version)
+      [0, 1].includes?(self <=> other)
+    end
+
+    private def has_required_keys?(version)
+      version.has_key?("major") &&
+        version.has_key?("minor") &&
+        version.has_key?("patch")
+    end
+
     private def compare_version(other : Version)
-      {% for part in ["major", "minor", "patch"] %}
-        self.{{part.id}} <=> other.{{part.id}}
-      {% end %}
+      [
+        compare_elem(self.major, other.major),
+        compare_elem(self.minor, other.minor),
+        compare_elem(self.patch, other.patch)
+      ].each do |result|
+        return result if result != 0
+      end
+      0
+    end
+
+    def compare_elem(one : Int32, other : Int32)
+      one <=> other
     end
 
     private def compare_pre(other : Version)
@@ -114,72 +317,6 @@ module Semantic
       return 0 if self.pre.nil? && other.pre.nil?
       return 1 if self.pre.nil?
       return -1 if other.pre.nil?
-    end
-
-    def <=>(version : String)
-      self <=> Version.new(version)
-    end
-
-    def to_s
-      String.build do |io|
-        io << [@major, @minor, @patch].join(".")
-        io << "-" << @pre unless @pre.nil?
-        io << "+" << @build unless @build.nil?
-      end
-    end
-
-    def to_a
-      [@major, @minor, @patch, @pre, @build]
-    end
-
-    def to_h
-      {
-        "major" => @major,
-        "minor" => @minor,
-        "patch" => @patch,
-        "pre" => @pre,
-        "build" => @build
-      }
-    end
-
-    def to_t
-      {
-        major: @major,
-        minor: @minor,
-        patch: @patch,
-        pre: @pre,
-        build: @build
-      }
-    end
-
-    def >(other : Version)
-      (self <=> other) == 1
-    end
-
-    def >(other : Nil)
-      !!(self <=> other)
-    end
-
-    def <(other : Version)
-      (self <=> other) == -1
-    end
-
-    def <(other : Nil)
-      !(self <=> nil)
-    end
-
-    def <=(other : Version)
-      [0, -1].includes?(self <=> other)
-    end
-
-    def >=(other : Version)
-      [0, 1].includes?(self <=> other)
-    end
-
-    private def has_required_keys?(version)
-      version.has_key?("major") &&
-        version.has_key?("minor") &&
-        version.has_key?("patch")
     end
   end
 end

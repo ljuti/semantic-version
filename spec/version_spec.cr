@@ -321,4 +321,56 @@ Spec2.describe Semantic::Version do
       end
     end
   end
+
+  describe "Convenience methods" do
+    let(version1) { described_class.new("1.0.0") }
+    let(version2) { described_class.new("0.0.2") }
+    let(version3) { described_class.new("1.0.0") }
+
+    describe "#gt?" do
+      it "returns true if version is greater than supplied" do
+        expect(version1.gt?(version2)).to be_true
+        expect(version2.gt?(version1)).to be_false
+        expect(version1.gt?("0.9.1")).to be_true
+        expect(version1.gt?("1.0.1")).to be_false
+      end
+    end
+
+    describe "#lt?" do
+      it "returns true if version is less than supplied" do
+        expect(version1.lt?(version2)).to be_false
+        expect(version2.lt?(version1)).to be_true
+        expect(version1.lt?("2.0.0")).to be_true
+        expect(version1.lt?("0.26.1")).to be_false
+      end
+    end
+
+    describe "#gte?" do
+      it "returns true if version is greater or equal than supplied" do
+        expect(version1.gte?(version3)).to be_true
+        expect(version2.gte?(version1)).to be_false
+        expect(version1.gte?("1.0.0")).to be_true
+        expect(version1.gte?("0.26.1")).to be_true
+        expect(version1.gte?("2.0.0")).to be_false
+      end
+    end
+
+    describe "#lte?" do
+      it "returns true if version is less or equal than supplied" do
+        expect(version1.lte?(version3)).to be_true
+        expect(version1.lte?(version2)).to be_false
+        expect(version1.lte?("1.0.0")).to be_true
+        expect(version1.lte?("2.0.0")).to be_true
+        expect(version1.lte?("0.26.1")).to be_false
+      end
+    end
+
+    describe "#eql?" do
+      it "returns true if version is equal to supplied" do
+        expect(version1.eql?(version3)).to be_true
+        expect(version1.eql?(version2)).to be_false
+        expect(version1.eql?("1.0.0")).to be_true
+      end
+    end
+  end
 end
