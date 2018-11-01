@@ -1,2 +1,2 @@
 require "spec2"
-require "../src/version"
+require "../src/semantic-version"
